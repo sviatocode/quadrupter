@@ -2,7 +2,7 @@ PROJ_NAME = quadrupter
 
 ###################################################
 # Set toolchain
-TC = D:/Compillers/GNU Tools ARM Embedded/5.3 2016q1/bin/arm-none-eabi
+TC = C:/Program Files (x86)/GNU Tools ARM Embedded/5.3 2016q1/bin/arm-none-eabi
 
 # Set Tools
 CC      = $(TC)-gcc
@@ -10,8 +10,8 @@ AR      = $(TC)-ar
 OBJCOPY = $(TC)-objcopy
 OBJDUMP = $(TC)-objdump
 SIZE    = $(TC)-size
-RM      = D:/Compillers/WinAVR-20100110/utils/bin/rm
-MKDIR   = D:/Compillers/WinAVR-20100110/utils/bin/mkdir
+RM      = C:/WinAVR-20100110/utils/bin/rm
+MKDIR   = C:/WinAVR-20100110/utils/bin/mkdir
 PR      = "C:/Program Files (x86)/STMicroelectronics/STM32 ST-LINK Utility/ST-LINK Utility/ST-LINK_CLI"
 
 ###################################################
@@ -20,23 +20,19 @@ BIN_PATH = Bin
 OBJ_PATH = Obj
 
 # Set Sources
-SRCS = $(wildcard mx-gen/Drivers/CMSIS/Device/ST/STM32F3xx/Source/Templates/*.c) \
-       $(wildcard mx-gen/Drivers/STM32F3xx_HAL_Driver/Src/*.c) \
-       $(wildcard mx-gen/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/*.c) \
-       $(wildcard mx-gen/Middlewares/ST/STM32_USB_Device_Library/Core/Src/*.c) \
+SRCS = $(wildcard mx-gen/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/*.c) \
+       $(wildcard mx-gen/Drivers/STM32F1xx_HAL_Driver/Src/*.c) \
        $(wildcard mx-gen/Src/*.c) \
 	   $(wildcard *.c)
 
 # Set Objects
 OBJS = $(patsubst %,$(OBJ_PATH)/%,$(SRCS:.c=.o)) \
-       $(OBJ_PATH)/mx-gen/Drivers/CMSIS/Device/ST/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.o
+       $(OBJ_PATH)/mx-gen/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc/startup_stm32f100xb.o
 
 # Set Include Paths
-INCLUDES = -Imx-gen/Drivers/CMSIS/Device/ST/STM32F3xx/Include/ \
+INCLUDES = -Imx-gen/Drivers/CMSIS/Device/ST/STM32F1xx/Include/ \
            -Imx-gen/Drivers/CMSIS/Include/ \
-           -Imx-gen/Drivers/STM32F3xx_HAL_Driver/Inc/ \
-           -Imx-gen/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/ \
-           -Imx-gen/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/ \
+           -Imx-gen/Drivers/STM32F1xx_HAL_Driver/Inc/ \
            -Imx-gen/Inc/ \
 		   -I../$(PROJ_NAME)/
 
@@ -52,11 +48,11 @@ HEX = $(BIN_PATH)/$(PROJ_NAME).hex
 
 ###################################################
 # Set Board
-MCU      = -mthumb -mcpu=cortex-m4
-FPU      = -mfpu=fpv4-sp-d16 -mfloat-abi=hard
-DEFINES  = -DSTM32F303xC -DUSE_HAL_DRIVER
+MCU      = -mthumb -mcpu=cortex-m3
+FPU      = -mfloat-abi=soft
+DEFINES  = -DSTM32F100xB -DUSE_HAL_DRIVER
 
-LDFILE   = -Tmx-gen/TrueSTUDIO/mx-gen/STM32F303VC_FLASH.ld
+LDFILE   = -Tmx-gen/TrueSTUDIO/mx-gen/STM32F100RB_FLASH.ld
 
 # Set Compilation and Linking Flags
 # -Wall						: All warnings
@@ -88,11 +84,9 @@ all: $(BIN) info
 dirs:
 	$(MKDIR) -p $(BIN_PATH)
 	$(MKDIR) -p $(OBJ_PATH)
-	$(MKDIR) -p $(OBJ_PATH)/mx-gen/Drivers/CMSIS/Device/ST/STM32F3xx/Source/Templates
-	$(MKDIR) -p $(OBJ_PATH)/mx-gen/Drivers/CMSIS/Device/ST/STM32F3xx/Source/Templates/gcc
-	$(MKDIR) -p $(OBJ_PATH)/mx-gen/Drivers/STM32F3xx_HAL_Driver/Src
-	$(MKDIR) -p $(OBJ_PATH)/mx-gen/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src
-	$(MKDIR) -p $(OBJ_PATH)/mx-gen/Middlewares/ST/STM32_USB_Device_Library/Core/Src
+	$(MKDIR) -p $(OBJ_PATH)/mx-gen/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates
+	$(MKDIR) -p $(OBJ_PATH)/mx-gen/Drivers/CMSIS/Device/ST/STM32F1xx/Source/Templates/gcc
+	$(MKDIR) -p $(OBJ_PATH)/mx-gen/Drivers/STM32F1xx_HAL_Driver/Src
 	$(MKDIR) -p $(OBJ_PATH)/mx-gen/Src
 
 $(OBJ_PATH)/%.o : %.c Makefile

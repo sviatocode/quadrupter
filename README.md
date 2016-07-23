@@ -1,2 +1,2 @@
 # quadrupter
-STM32F3Discovery based quadrupter robot
+STM32VLDiscovery based quadrupter robot
